@@ -55,3 +55,29 @@ http://127.0.0.1:6721/increase_health:20<br>
 This will increase or decrease your health with the specified value. In this case, your health will be increased by 20. To reduce the health, use a negative value (e.g. -20).
 
 *More commands are comming soon...*
+
+## TikFinity Integration
+The easiest way to trigger the webhooks through TikTok Live Events is to use [TikFinity](https://tikfinity.zerody.one/). You can integrate up to 5 different webhooks for free. To integrate a webhook do the following:
+
+<img align="right" src="https://user-images.githubusercontent.com/95110801/233436408-4214b3bf-46d6-4ed8-a2d7-9833d11f4b05.png" height=500>
+
+### Create Action
+- Go to **Actions & Events**
+- Click on **Create new Action**
+- Select **Trigger Webhook**
+- Paste one of the Webhook URLs above (based on what you want to trigger in the game) and remember to adjust the number in the command if necessary. E.g. how many attackers you want to spawn.
+- Scroll down and save the action.
+
+### Create Event
+- Click on **Create new Event**
+- Define by what the action should be triggered. For example, "Sending a specific gift".
+- At "Trigger all of these actions" select the previously created action.
+- Scroll down and save the event.
+
+Repeat the steps for all webhooks you want to integrate.
+
+## Support
+If you have any questions, you can contact me on Discord: **Smeys#5697**<br>
+
+## Contribute
+This is an open source project. If you want to implement new features, feel free to create a pull request.
