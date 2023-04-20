@@ -1,5 +1,5 @@
 # GTA5 TikTok Integration
-GTA5 Plugin to control GTA5 via Webhook events from TikTok Live. You need TikFinity (https://tikfinity.zerody.one/) to setup Webhooks on certain events.
+GTA5 Plugin to control GTA5 via Webhook events from TikTok LIVE. I recommend [TikFinity](https://tikfinity.zerody.one/) to setup Webhooks on certain events.
 
 ## Installation
 - Make sure that GTA5 is not running.
@@ -57,7 +57,7 @@ This will increase or decrease your health with the specified value. In this cas
 *More commands are comming soon...*
 
 ## TikFinity Integration
-The easiest way to trigger the webhooks through TikTok Live Events is to use [TikFinity](https://tikfinity.zerody.one/). You can integrate up to 5 different webhooks for free. To integrate a webhook do the following:
+The easiest way to trigger the webhooks through TikTok LIVE events is to use [TikFinity](https://tikfinity.zerody.one/). You can integrate up to 5 different webhooks for free. To integrate a webhook do the following:
 
 <img align="right" src="https://user-images.githubusercontent.com/95110801/233436408-4214b3bf-46d6-4ed8-a2d7-9833d11f4b05.png" height=500>
 
