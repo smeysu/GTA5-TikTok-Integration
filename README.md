@@ -15,43 +15,65 @@ Please note that the plugin installation may need to be repeated after a GTA5 up
 
 ## Webhook Usage
 The plugin offers several webhook URLs that can be used to trigger different actions in the game.<br>
-The basic syntax is: `http://127.0.0.1:6721/<command>:<amount>`<br>
+The basic syntax is: `http://127.0.0.1:6721/<command>:<name/amount>`<br>
 All commands are defined in [GTAVWebhookScript.cs](https://github.com/smeysu/GTA5-TikTok-Integration/blob/main/GTAVWebhookScript.cs).<br>
 
-http://127.0.0.1:6721/kill<br>
+### http://127.0.0.1:6721/kill
 Kills the player.
 
-http://127.0.0.1:6721/increase_wanted<br>
+### http://127.0.0.1:6721/spawn_vehicle:Felon
+Spawn the specified vehicle near the player. In this case an `Felon` is created.<br>You can find here a list with all vehicle names: https://wiki.gtanet.work/index.php?title=Vehicle_Models
+
+### http://127.0.0.1:6721/remove_spawned_vehicles
+Removes all previously spawned vehicles.
+
+### http://127.0.0.1:6721/repair_current_vehicle
+Sets the health status of the currently used vehicle to 100%.
+
+### http://127.0.0.1:6721/give_weapon:CombatMG
+Gives the player the specified weapon. In this case a `CombatMG`.<br>
+You can find a list with all weapon names here: https://wiki.gtanet.work/index.php?title=Weapons_Models
+
+### http://127.0.0.1:6721/set_max_weapon_ammo
+Sets the ammunition of the current weapon to the maximum.
+
+### http://127.0.0.1:6721/set_time:02
+Sets the time to the specified hour value. In this case to `02` (=02:00) which causes the world to become dark. Use `13` to make it bright again.
+
+### http://127.0.0.1:6721/set_weather:Raining
+Sets the weather to the specified value. In this case `Raining`. Available values: `Halloween`, `Clear`, `Unknown`, `Neutral`, `Clearing`, `Blizzard`, `Christmas`, `Clear`, `Clearing`, `Clouds`, `ExtraSunny`, `Foggy`, `Overcast`, `Raining`, `Smog`, `Snowing`, `Snowlight`, `ThunderStorm`
+
+### http://127.0.0.1:6721/increase_wanted
 Increases the wanted level by 1. There are 5 wanted levels (1-5).
 
-http://127.0.0.1:6721/decrease_wanted<br>
+### http://127.0.0.1:6721/decrease_wanted
 Decreases the wanted level by 1. There are 5 wanted levels (1-5).
 
-http://127.0.0.1:6721/max_wanted<br>
+### http://127.0.0.1:6721/max_wanted
 Sets the wanted level to 5.
 
-http://127.0.0.1:6721/add_money:10<br>
+### http://127.0.0.1:6721/add_money:10
 Adds the specified amount to the player wallet. In this case, 10 are added. If you want to deduct money, use a negative number value in the URL (e.g. -10).
 
-http://127.0.0.1:6721/set_money:500<br>
+### http://127.0.0.1:6721/set_money:500
 Sets the money balance to the specified value. In this case 500.
 
-http://127.0.0.1:6721/spawn_attackers:1<br>
+### http://127.0.0.1:6721/spawn_attackers:1
 Spawn the specified number of attackers to attack you. In this case 1 attacker will be spawned.
 
-http://127.0.0.1:6721/spawn_attackers_and_shoot:1<br>
+### http://127.0.0.1:6721/spawn_attackers_and_shoot:1
 Spawn the specified number of attackers to attack you **with guns**. In this case 1 attacker will be spawned.
 
-http://127.0.0.1:6721/attackers_start_shooting:30<br>
+### http://127.0.0.1:6721/attackers_start_shooting:30
 This will give all already spawned attackers a weapon to attack you for a certain amount of time. In this case, for 30 seconds. It can also cause the attackers to shoot each other, which gives you an advantage :)
 
-http://127.0.0.1:6721/remove_attackers:5<br>
+### http://127.0.0.1:6721/remove_attackers:5
 This removes a specified number of previously spawned attackers. In this case 5.
 
-http://127.0.0.1:6721/leave_car<br>
+### http://127.0.0.1:6721/leave_car
 If you are sitting in a car, this command will kick you out of the car.
 
-http://127.0.0.1:6721/increase_health:20<br>
+### http://127.0.0.1:6721/increase_health:20
 This will increase or decrease your health with the specified value. In this case, your health will be increased by 20. To reduce the health, use a negative value (e.g. -20).
 
 *More commands are comming soon...*
