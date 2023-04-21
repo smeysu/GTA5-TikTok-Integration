@@ -58,25 +58,48 @@ namespace GTAVWebhook
                 // do something with the request
                 Console.WriteLine($"{request.Url}");
 
-                if (request.HttpMethod == "POST" && request.HasEntityBody)
+                byte[] responseData = new byte[0];
+
+                if (request.RawUrl == "/favicon.ico")
                 {
-                    var body = request.InputStream;
-                    var encoding = request.ContentEncoding;
-                    var reader = new StreamReader(body, encoding);
-                    string postData = reader.ReadToEnd();
-                    reader.Close();
-                    body.Close();
+                    // ignore
+                }
+                else if (request.RawUrl == "/logs")
+                {
+                    responseData = Encoding.UTF8.GetBytes(
+                        $"<h1>Logs</h1>" +
+                        $"<pre>{Logger.GetLogContents()}</pre>"
+                     );
+                }
+                else
+                {
+                    string debugInfo = "";
+                    string rawPostData = null;
 
-                    Logger.Log("Process HttpRequest: URL=" + request.RawUrl + " Data=" + postData);
+                    NameValueCollection parsedPostData = new NameValueCollection();
 
-                    NameValueCollection parsed = HttpUtility.ParseQueryString(postData);
+                    // Parse body if present
+                    if (request.HttpMethod == "POST" && request.HasEntityBody)
+                    {
+                        var body = request.InputStream;
+                        var encoding = request.ContentEncoding;
+                        var reader = new StreamReader(body, encoding);
+                        rawPostData = reader.ReadToEnd();
+                        reader.Close();
+                        body.Close();
+
+                        parsedPostData = HttpUtility.ParseQueryString(rawPostData);
+                    }
+
+                    Logger.Log("Process HttpRequest: URL=" + request.RawUrl + " Data=" + (rawPostData ?? ""));
+
 
                     string[] urlSplit = request.RawUrl.Substring(1).Split(':');
 
                     if (urlSplit[0].Length > 0)
                     {
                         string cmd = urlSplit[0];
-                        string username = parsed["username"] ?? "";
+                        string username = parsedPostData["username"] ?? "";
                         string custom = "";
 
                         if (urlSplit.Length == 2)
@@ -84,16 +107,29 @@ namespace GTAVWebhook
                             custom = urlSplit[1].Trim();
                         }
 
+                        debugInfo = $"<p>The following command has been executed with this request:</p>" +
+                            $"<pre>" +
+                            $"COMMAND: {cmd}\n" +
+                            $"USERNAME: {username}\n" +
+                            $"CUSTOM: {custom}" +
+                            $"</pre>";
+
                         commandInfoQueue.Enqueue(new CommandInfo() { cmd = cmd, username = username, custom = custom });
                     }
-                }
 
-                byte[] responseData = Encoding.ASCII.GetBytes("<h1>Its working!</h1><p>The GTA 5 integration is running!</p>");
+                    responseData = Encoding.UTF8.GetBytes(
+                        $"<h1>Its working!</h1>" +
+                        $"<p>The GTA 5 integration is running!</p>" +
+                        $"<p>Visit <a href=\"https://github.com/smeysu/GTA5-TikTok-Integration\">https://github.com/smeysu/GTA5-TikTok-Integration</a> to learn how to use this plugin.</p>" +
+                        $"<p>{debugInfo}</p>" +
+                        $"<a href=\"/logs\">Show Logs</a>"
+                      );
+                }
 
                 // write response
                 HttpListenerResponse response = context.Response;
                 response.StatusCode = (int)HttpStatusCode.OK;
-                response.ContentType = "text/html";
+                response.ContentType = "text/html; charset=UTF-8";
                 response.Headers.Add("Access-Control-Allow-Origin: *");
                 response.Headers.Add("Access-Control-Allow-Methods: GET,POST");
                 response.OutputStream.Write(responseData, 0, responseData.Length);

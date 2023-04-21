@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using GTA;
+using GTA.Math;
 using GTAVWebhook;
 using GTAVWebhook.Types;
 
@@ -9,6 +10,7 @@ public class GTAVWebhookScript : Script
 {
     private HttpServer httpServer = new HttpServer();
     private bool isFirstTick = true;
+    private List<Vehicle> spawnedVehicles = new List<Vehicle>();
     private List<Attacker> npcList = new List<Attacker>();
 
     public GTAVWebhookScript()
@@ -23,6 +25,8 @@ public class GTAVWebhookScript : Script
         if (isFirstTick)
         {
             isFirstTick = false;
+
+            Logger.Clear();
 
             try
             {
@@ -97,6 +101,104 @@ public class GTAVWebhookScript : Script
                     Game.Player.Character.Kill();
                     break;
                 }
+            case "spawn_vehicle":
+                {
+                    VehicleHash vehicleHash;
+                    if (Enum.TryParse<VehicleHash>(command.custom, out vehicleHash))
+                    {
+                        spawnedVehicles.Add(World.CreateVehicle(new Model(vehicleHash), Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5));
+                        Logger.Log("Vehicle spawned: " + command.custom);
+                    }
+                    else
+                    {
+                        Logger.Log("Cannot parse vehicle name: " + command.custom);
+                    }
+                    break;
+                }
+            case "remove_spawned_vehicles":
+                {
+                    try
+                    {
+                        while (spawnedVehicles.Count > 0)
+                        {
+                            Logger.Log("Removing vehicle: " + spawnedVehicles[0].DisplayName);
+                            spawnedVehicles[0].Delete();
+                            spawnedVehicles.RemoveAt(0);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Failed to remove spawned vehicles: " + ex.Message);
+                    }
+
+                    break;
+                }
+            case "repair_current_vehicle":
+                {
+                    if (Game.Player.Character.CurrentVehicle != null)
+                    {
+                        Game.Player.Character.CurrentVehicle.HealthFloat = Game.Player.Character.CurrentVehicle.MaxHealthFloat;
+                        Logger.Log("CurrentVehicle Health restored to " + Game.Player.Character.CurrentVehicle.HealthFloat.ToString());
+                    }
+                    else
+                    {
+                        Logger.Log("Cannot repair current vehicle because player not in vehicle");
+                    }
+                    break;
+                }
+            case "give_weapon":
+                {
+                    WeaponHash weaponHash;
+                    if (Enum.TryParse<WeaponHash>(command.custom, out weaponHash))
+                    {
+                        Game.Player.Character.Weapons.Give(weaponHash, 9999, true, true);
+                        Logger.Log("Weapon given: " + command.custom);
+                    }
+                    else
+                    {
+                        Logger.Log("Cannot parse weapon name: " + command.custom);
+                    }
+                    break;
+                }
+            case "set_max_weapon_ammo":
+                {
+                    if (!int.TryParse(command.custom, out int ammo))
+                        ammo = 9999;
+
+                    if (ammo > Game.Player.Character.Weapons.Current.MaxAmmo)
+                        ammo = Game.Player.Character.Weapons.Current.MaxAmmo;
+
+                    Game.Player.Character.Weapons.Current.Ammo = ammo;
+                    break;
+                }
+            case "set_time":
+                {
+                    TimeSpan ts;
+                    if (TimeSpan.TryParse(command.custom + ":00", out ts))
+                    {
+                        World.CurrentTimeOfDay = ts;
+                        Logger.Log("Time set to: " + command.custom);
+                    }
+                    else
+                    {
+                        Logger.Log("Cannot parse TimeSpan: " + command.custom);
+                    }
+
+                    break;
+                }
+            case "set_weather":
+                {
+                    Weather weather;
+                    if (Enum.TryParse<Weather>(command.custom, out weather))
+                    {
+                        World.Weather = weather;
+                    }
+                    else
+                    {
+                        Logger.Log("Cannot parse Weather: " + command.custom);
+                    }
+                    break;
+                }
             case "increase_wanted":
                 {
                     if (Game.Player.WantedLevel < 5)
@@ -126,9 +228,7 @@ public class GTAVWebhookScript : Script
                     Game.Player.Money += moneyToAdd;
 
                     if (Game.Player.Money < 0)
-                    {
                         Game.Player.Money = 0;
-                    }
 
                     Logger.Log("Player Money set to " + Game.Player.Money.ToString());
 
@@ -144,9 +244,7 @@ public class GTAVWebhookScript : Script
                     }
 
                     if (moneyToSet < 0)
-                    {
                         moneyToSet = 0;
-                    }
 
                     Game.Player.Money = moneyToSet;
 
@@ -239,6 +337,13 @@ public class GTAVWebhookScript : Script
                     }
                     break;
                 }
+            case "skydive":
+                {
+                    Game.Player.Character.Position = new Vector3(Game.Player.Character.Position.X, Game.Player.Character.Position.Y, Game.Player.Character.Position.Z + 400);
+                    Game.Player.Character.Task.Skydive();
+                    Logger.Log("Skydive started");
+                    break;
+                }
             case "increase_health":
                 {
                     if (!int.TryParse(command.custom, out int healStep))
@@ -247,14 +352,10 @@ public class GTAVWebhookScript : Script
                     float newHealthScore = Game.Player.Character.HealthFloat + healStep;
 
                     if (newHealthScore < 0)
-                    {
                         newHealthScore = 0;
-                    }
 
                     if (newHealthScore > Game.Player.Character.MaxHealthFloat)
-                    {
                         newHealthScore = Game.Player.Character.MaxHealthFloat;
-                    }
 
                     Game.Player.Character.HealthFloat = newHealthScore;
 
