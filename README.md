@@ -101,6 +101,17 @@ The easiest way to trigger the webhooks through TikTok LIVE events is to use [Ti
 
 Repeat the steps for all webhooks you want to integrate.
 
+## Troubleshooting
+If the plugin does not work as expected, it might be worth taking a look at the log files in the GTA 5 installation folder.<br>
+This includes:
+- `asiloader.log`
+- `ScriptHookV.log`
+- `ScriptHookVDotNet.log`
+- `GTAVWebhook.log`
+
+In case the loading of the `ScriptHookVDotNet` library fails, the reason could be a missing .NET Framework version.<br>
+Please install [.NET Framework 4.8](https://support.microsoft.com/en-us/topic/microsoft-net-framework-4-8-offline-installer-for-windows-9d23f658-3b97-68ab-d013-aa3c3e7495e0) and try again.
+
 ## Support
 If you have any questions, you can contact me on Discord: **Smeys#5697**<br>
 
