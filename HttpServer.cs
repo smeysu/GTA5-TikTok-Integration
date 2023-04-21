@@ -60,7 +60,7 @@ namespace GTAVWebhook
 
                 byte[] responseData = new byte[0];
 
-                if (request.RawUrl == "/favicon.ico")
+                if (request.HttpMethod == "OPTIONS" || request.RawUrl == "/favicon.ico")
                 {
                     // ignore
                 }
