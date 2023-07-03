@@ -22,7 +22,7 @@ All commands are defined in [GTAVWebhookScript.cs](https://github.com/smeysu/GTA
 Kills the player.
 
 ### http://127.0.0.1:6721/spawn_vehicle:Felon
-Spawn the specified vehicle near the player. In this case an `Felon` is created.<br>You can find here a list with all vehicle names: https://wiki.gtanet.work/index.php?title=Vehicle_Models
+Spawn the specified vehicle near the player. In this case an `Felon` is created.<br>You can find here a list with all vehicle names: https://web.archive.org/web/20230514212045/https://wiki.gtanet.work/index.php?title=Vehicle_Models
 
 ### http://127.0.0.1:6721/remove_spawned_vehicles
 Removes all previously spawned vehicles.
