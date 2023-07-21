@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using GTA;
@@ -143,6 +143,15 @@ public class GTAVWebhookScript : Script
                     else
                     {
                         Logger.Log("Cannot repair current vehicle because player not in vehicle");
+                    }
+                    break;
+                }
+            case "explode_vehicle":
+                {
+                    Vehicle[] nearbyVehicles = World.GetNearbyVehicles(Game.Player.Character, 20);
+                    foreach (Vehicle vehicle in nearbyVehicles)
+                    {
+                        vehicle.Explode();
                     }
                     break;
                 }
