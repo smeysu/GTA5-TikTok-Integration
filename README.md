@@ -30,6 +30,9 @@ Removes all previously spawned vehicles.
 ### http://127.0.0.1:6721/repair_current_vehicle
 Sets the health status of the currently used vehicle to 100%.
 
+### http://127.0.0.1:6721/explode_vehicle
+Explodes all vehicles within a radius of 20 meters.
+
 ### http://127.0.0.1:6721/give_weapon:CombatMG
 Gives the player the specified weapon. In this case a `CombatMG`.<br>
 You can find a list with all weapon names here: https://wiki.gtanet.work/index.php?title=Weapons_Models
