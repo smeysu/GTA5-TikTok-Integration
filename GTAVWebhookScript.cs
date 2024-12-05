@@ -261,7 +261,7 @@ public class GTAVWebhookScript : Script
 
                     break;
                 }
-            case "spawn_attackers":
+            case "spawn_attackers":attacker_model
                 {
                     if (Game.Player.Character.IsInAir)
                     {
@@ -278,7 +278,7 @@ public class GTAVWebhookScript : Script
                     {
                         Logger.Log("Spawn Attacker");
                         Attacker npc = new Attacker(command.username, false);
-                        npcList.Add(npc);
+                        npcList.Add(npc);attacker_model
                     }
 
                     break;
@@ -305,7 +305,7 @@ public class GTAVWebhookScript : Script
 
                     break;
                 }
-            case "attackers_start_shooting":
+            case "attackers_start_shooting":attacker_model
                 {
                     if (!int.TryParse(command.custom, out int duration))
                         duration = 30;
