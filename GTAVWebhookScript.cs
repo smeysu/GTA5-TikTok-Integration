@@ -5,6 +5,38 @@ using GTA;
 using GTA.Math;
 using GTAVWebhook;
 using GTAVWebhook.Types;
+using CitizenFX.Core;
+using System.Threading.Tasks;
+
+public class PedSpawner : BaseScript
+{
+    public PedSpawner()
+    {
+        // Register the event handler for the webhook
+        EventHandlers["webhook:spawnPed"] += new Action<string>(OnSpawnPed);
+    }
+
+    // Function to handle the webhook event
+    private async void OnSpawnPed(string pedModel)
+    {
+        // Request the model
+        uint model = (uint)API.GetHashKey(pedModel);
+        API.RequestModel(model);
+        while (!API.HasModelLoaded(model))
+        {
+            await Delay(100);
+        }
+
+        // Get player's position
+        Vector3 playerPosition = API.GetEntityCoords(API.PlayerPedId(), true);
+        
+        // Create the ped at player's position
+        API.CreatePed(4, model, playerPosition.X, playerPosition.Y, playerPosition.Z, 0.0f, true, false);
+        
+        // Mark the model as no longer needed
+        API.SetModelAsNoLongerNeeded(model);
+    }
+}
 
 public class GTAVWebhookScript : Script
 {
